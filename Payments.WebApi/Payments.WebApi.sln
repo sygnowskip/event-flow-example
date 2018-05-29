@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.WebApi", "Payments.WebApi\Payments.WebApi.csproj", "{16D49A83-D6CC-4C05-AB82-AEB207FCCA8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.Domain", "Payments.Domain\Payments.Domain.csproj", "{402BB23B-9E11-4A3A-8247-C9A07F87B83D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{16D49A83-D6CC-4C05-AB82-AEB207FCCA8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16D49A83-D6CC-4C05-AB82-AEB207FCCA8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16D49A83-D6CC-4C05-AB82-AEB207FCCA8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16D49A83-D6CC-4C05-AB82-AEB207FCCA8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{402BB23B-9E11-4A3A-8247-C9A07F87B83D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{402BB23B-9E11-4A3A-8247-C9A07F87B83D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{402BB23B-9E11-4A3A-8247-C9A07F87B83D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{402BB23B-9E11-4A3A-8247-C9A07F87B83D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
