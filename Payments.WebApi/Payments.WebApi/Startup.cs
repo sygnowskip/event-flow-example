@@ -48,6 +48,8 @@ namespace Payments.WebApi
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             InitializeEventFlowDbStructure(serviceProvider);
+            //THIS FEATURE IS MISSING
+            //InitializeReadModels();
 
             if (env.IsDevelopment())
             {

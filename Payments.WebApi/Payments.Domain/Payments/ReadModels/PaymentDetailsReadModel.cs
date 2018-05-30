@@ -7,6 +7,7 @@ namespace Payments.Domain.Payments.ReadModels
     public class PaymentDetailsReadModel : IReadModel,
         IAmReadModelFor<PaymentAggregate, PaymentId, PaymentProcessStarted>
     {
+        [MsSqlReadModelIdentityColumnAttribute]
         public PaymentId Id { get; private set; }
         public string Country { get; private set; }
         public string Currency { get; private set; }
