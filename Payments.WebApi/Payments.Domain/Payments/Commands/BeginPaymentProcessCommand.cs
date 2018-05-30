@@ -1,8 +1,8 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using EventFlow.Aggregates.ExecutionResults;
 using EventFlow.Commands;
-using EventFlow.Core;
 
 namespace Payments.Domain.Payments.Commands
 {
@@ -12,28 +12,30 @@ namespace Payments.Domain.Payments.Commands
         public string Currency { get; }
         public string System { get; }
         public string ExternalId { get; }
+        public string ExternalCallbackUrl { get; }
         public decimal Amount { get; }
 
-        public BeginPaymentProcessCommand(PaymentId aggregateId, string country, string currency, string system, string externalId, decimal amount) : base(aggregateId)
+        public BeginPaymentProcessCommand(PaymentId aggregateId, string country, string currency, string system, string externalId, string externalCallbackUrl, decimal amount) : base(aggregateId)
         {
             Country = country;
             Currency = currency;
             System = system;
             ExternalId = externalId;
             Amount = amount;
+            ExternalCallbackUrl = externalCallbackUrl;
         }
     }
 
     public class BeginPaymentProcessCommandResult : ExecutionResult
     {
-        public BeginPaymentProcessCommandResult(bool isSuccess, string redirectUrl)
+        public BeginPaymentProcessCommandResult(bool isSuccess, Uri redirectUrl)
         {
             IsSuccess = isSuccess;
             RedirectUrl = redirectUrl;
         }
 
         public override bool IsSuccess { get; }
-        public string RedirectUrl { get; }
+        public Uri RedirectUrl { get; }
     }
 
     public class
@@ -41,9 +43,9 @@ namespace Payments.Domain.Payments.Commands
     {
         public override async Task<BeginPaymentProcessCommandResult> ExecuteCommandAsync(PaymentAggregate aggregate, BeginPaymentProcessCommand command, CancellationToken cancellationToken)
         {
-            var url = await aggregate.BeginPaymentProcessAsync(command.Country, command.Currency, command.System, command.ExternalId,
+            var redirectUrl = await aggregate.BeginPaymentProcessAsync(command.Country, command.Currency, command.System, command.ExternalId, command.ExternalCallbackUrl,
                 command.Amount);
-            return new BeginPaymentProcessCommandResult(true, url);
+            return new BeginPaymentProcessCommandResult(true, redirectUrl);
         }
     }
 }

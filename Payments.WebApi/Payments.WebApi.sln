@@ -1,8 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.WebApi", "Payments.WebApi\Payments.WebApi.csproj", "{16D49A83-D6CC-4C05-AB82-AEB207FCCA8E}"
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2018
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payments.WebApi", "Payments.WebApi\Payments.WebApi.csproj", "{16D49A83-D6CC-4C05-AB82-AEB207FCCA8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.Domain", "Payments.Domain\Payments.Domain.csproj", "{402BB23B-9E11-4A3A-8247-C9A07F87B83D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payments.Domain", "Payments.Domain\Payments.Domain.csproj", "{402BB23B-9E11-4A3A-8247-C9A07F87B83D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.Application", "Payments.Application\Payments.Application.csproj", "{C8E99081-C301-436F-A75B-97BB980045AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +23,15 @@ Global
 		{402BB23B-9E11-4A3A-8247-C9A07F87B83D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{402BB23B-9E11-4A3A-8247-C9A07F87B83D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{402BB23B-9E11-4A3A-8247-C9A07F87B83D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8E99081-C301-436F-A75B-97BB980045AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8E99081-C301-436F-A75B-97BB980045AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8E99081-C301-436F-A75B-97BB980045AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8E99081-C301-436F-A75B-97BB980045AC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3F1BA6D7-408B-4875-A814-04E13EE70447}
 	EndGlobalSection
 EndGlobal
