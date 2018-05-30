@@ -14,6 +14,7 @@ namespace Payments.WebApi.Controllers
         public decimal Amount { get; set; }
     }
 
+    [Route("api/[controller]/[action]")]
     public class PaymentController : Controller
     {
         private readonly IPaymentsApplicationService _paymentsApplicationService;
@@ -23,8 +24,8 @@ namespace Payments.WebApi.Controllers
             _paymentsApplicationService = paymentsApplicationService;
         }
 
-        // GET
-        public async Task<IActionResult> Begin(BeginPaymentModel request)
+        [HttpPost]
+        public async Task<IActionResult> Begin([FromBody]BeginPaymentModel request)
         {
             var redirectUrl = await _paymentsApplicationService.BeginPaymentProcessAsync(request.Country,
                 request.Currency, request.System, request.ExternalId, request.ExternalCallbackUrl, request.Amount);

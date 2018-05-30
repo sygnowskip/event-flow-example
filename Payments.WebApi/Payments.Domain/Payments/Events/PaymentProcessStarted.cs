@@ -20,5 +20,6 @@ namespace Payments.Domain.Payments.Events
         public decimal Amount { get; }
         public string ExternalId { get; }
         public string ExternalCallbackUrl { get; }
+        public PaymentStatus Status { get; } = PaymentStatus.Started;
     }
 }

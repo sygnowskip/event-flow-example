@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EventFlow" Version="0.59.3396" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Payments.Domain\Payments.Domain.csproj" />
   </ItemGroup>
 
