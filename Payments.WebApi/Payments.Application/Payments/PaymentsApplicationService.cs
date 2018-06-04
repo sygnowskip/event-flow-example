@@ -13,6 +13,8 @@ namespace Payments.Application.Payments
     {
         Task<Uri> BeginPaymentProcessAsync(string country, string currency, string system, string externalId,
             string externalCallbackUrl, decimal amount);
+
+        Task CancelPaymentProcessAsync(string externalId);
     }
     public class PaymentsApplicationService : IPaymentsApplicationService
     {
@@ -28,8 +30,8 @@ namespace Payments.Application.Payments
         public async Task<Uri> BeginPaymentProcessAsync(string country, string currency, string system, string externalId,
             string externalCallbackUrl, decimal amount)
         {
-            var paymentDetails = await _queryProcessor.ProcessAsync(new GetPaymentDetailsQuery(externalId), CancellationToken.None)
-                .ConfigureAwait(false);
+            var paymentDetails = await _queryProcessor
+                .ProcessAsync(new GetPaymentDetailsQuery(externalId), CancellationToken.None);
             if (paymentDetails != null)
             {
                 throw new InvalidOperationException($"Payment for external id: {externalId} already exists!");
@@ -44,6 +46,23 @@ namespace Payments.Application.Payments
             }
 
             return beginPaymentProcessResult.RedirectUrl;
+        }
+
+        public async Task CancelPaymentProcessAsync(string externalId)
+        {
+            var paymentDetails = await _queryProcessor.ProcessAsync(new GetPaymentDetailsQuery(externalId), CancellationToken.None)
+                .ConfigureAwait(false);
+            if (paymentDetails == null)
+            {
+                throw new InvalidOperationException($"Payment for external id: {externalId} does not exists!");
+            }
+
+            var cancelPaymentProcessResult = await _commandBus.PublishAsync(new CancelPaymentProcessCommand(PaymentId.With(paymentDetails.PaymentId)), CancellationToken.None);
+
+            if (!cancelPaymentProcessResult.IsSuccess)
+            {
+                throw new InvalidOperationException("Payment cancellation process failed");
+            }
         }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EventFlow.Aggregates;
+using EventFlow.Extensions;
+using EventFlow.Queries;
 using Payments.Domain.Payments.Events;
+using Payments.Domain.Payments.Specifications;
 using Payments.Domain.Providers;
 
 namespace Payments.Domain.Payments
@@ -17,6 +20,8 @@ namespace Payments.Domain.Payments
             Register(_paymentState);
         }
 
+        public PaymentStatus PaymentStatus => _paymentState.Status;
+
         public async Task<Uri> BeginPaymentProcessAsync(string country, string currency, string system, string externalId, string externalCallbackUrl,
             decimal amount)
         {
@@ -31,6 +36,14 @@ namespace Payments.Domain.Payments
             Emit(new PaymentProcessStarted(country, currency, system, amount, externalId, externalCallbackUrl));
 
             return redirectUrl;
+        }
+
+        public void CancelPaymentProcess()
+        {
+            //move it to Automatonymous
+            new PaymentCancellationSpecification().ThrowDomainErrorIfNotSatisfied(this);
+
+            Emit(new PaymentProcessCancelled());
         }
     }
 }

@@ -5,14 +5,15 @@ namespace Payments.Domain.Payments
 {
     public enum PaymentStatus
     {
-        Started,
+        Started = 1,
         Cancelled,
         Failed,
         Completed
     }
 
     public class PaymentState : AggregateState<PaymentAggregate, PaymentId, PaymentState>,
-        IApply<PaymentProcessStarted>
+        IApply<PaymentProcessStarted>,
+        IApply<PaymentProcessCancelled>
     {
         public PaymentStatus Status { get; private set; }
         public string Country { get; private set; }
@@ -31,6 +32,11 @@ namespace Payments.Domain.Payments
             ExternalId = aggregateEvent.ExternalId;
             ExternalCallbackUrl = aggregateEvent.ExternalCallbackUrl;
             Status = PaymentStatus.Started;
+        }
+
+        public void Apply(PaymentProcessCancelled aggregateEvent)
+        {
+            Status = PaymentStatus.Cancelled;
         }
     }
 }

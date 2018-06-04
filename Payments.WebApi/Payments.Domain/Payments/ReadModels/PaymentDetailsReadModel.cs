@@ -6,8 +6,10 @@ using Payments.Domain.Payments.Events;
 
 namespace Payments.Domain.Payments.ReadModels
 {
+    [Table("ReadModel-PaymentDetailsReadModel")]
     public class PaymentDetailsReadModel : IReadModel,
-        IAmReadModelFor<PaymentAggregate, PaymentId, PaymentProcessStarted>
+        IAmReadModelFor<PaymentAggregate, PaymentId, PaymentProcessStarted>,
+        IAmReadModelFor<PaymentAggregate, PaymentId, PaymentProcessCancelled>
     {
         [MsSqlReadModelIdentityColumn]
         public string PaymentId { get; private set; }
@@ -31,6 +33,11 @@ namespace Payments.Domain.Payments.ReadModels
             Amount = domainEvent.AggregateEvent.Amount;
             ExternalId = domainEvent.AggregateEvent.ExternalId;
             ExternalCallbackUrl = domainEvent.AggregateEvent.ExternalCallbackUrl;
+            Status = domainEvent.AggregateEvent.Status;
+        }
+
+        public void Apply(IReadModelContext context, IDomainEvent<PaymentAggregate, PaymentId, PaymentProcessCancelled> domainEvent)
+        {
             Status = domainEvent.AggregateEvent.Status;
         }
     }
