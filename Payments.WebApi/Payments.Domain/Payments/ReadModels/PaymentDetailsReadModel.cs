@@ -1,4 +1,6 @@
-﻿using EventFlow.Aggregates;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using EventFlow.Aggregates;
+using EventFlow.MsSql.ReadStores.Attributes;
 using EventFlow.ReadStores;
 using Payments.Domain.Payments.Events;
 
@@ -7,8 +9,8 @@ namespace Payments.Domain.Payments.ReadModels
     public class PaymentDetailsReadModel : IReadModel,
         IAmReadModelFor<PaymentAggregate, PaymentId, PaymentProcessStarted>
     {
-        [MsSqlReadModelIdentityColumnAttribute]
-        public PaymentId Id { get; private set; }
+        [MsSqlReadModelIdentityColumn]
+        public string PaymentId { get; private set; }
         public string Country { get; private set; }
         public string Currency { get; private set; }
         public string System { get; private set; }
@@ -16,11 +18,13 @@ namespace Payments.Domain.Payments.ReadModels
         public string ExternalId { get; private set; }
         public string ExternalCallbackUrl { get; private set; }
         public PaymentStatus Status { get; private set; }
+        [MsSqlReadModelVersionColumn]
+        public int Version { get; set; }
 
 
         public void Apply(IReadModelContext context, IDomainEvent<PaymentAggregate, PaymentId, PaymentProcessStarted> domainEvent)
         {
-            Id = domainEvent.AggregateIdentity;
+            PaymentId = domainEvent.AggregateIdentity.Value;
             Country = domainEvent.AggregateEvent.Country;
             System = domainEvent.AggregateEvent.System;
             Currency = domainEvent.AggregateEvent.Currency;

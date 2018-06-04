@@ -2,7 +2,7 @@
 {
     public enum PaymentProviderType
     {
-        Adyen,
-        JPM
+        TestProvider1,
+        TestProvider2
     }
 }

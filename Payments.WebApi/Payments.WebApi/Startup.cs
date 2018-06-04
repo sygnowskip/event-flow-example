@@ -29,8 +29,8 @@ namespace Payments.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IPaymentProviderFactory, PaymentProviderFactory>();
-            services.AddTransient<IPaymentProvider, JPMPaymentProvider>();
-            services.AddTransient<IPaymentProvider, AdyenPaymentProvider>();
+            services.AddTransient<IPaymentProvider, TestProvider2PaymentProvider>();
+            services.AddTransient<IPaymentProvider, TestProvider1PaymentProvider>();
             services.AddTransient<Domain.Configuration.IConfigurationProvider, Domain.Configuration.ConfigurationProvider>();
             services.AddTransient<IPaymentsApplicationService, PaymentsApplicationService>();
             services.AddEventFlow(options => options

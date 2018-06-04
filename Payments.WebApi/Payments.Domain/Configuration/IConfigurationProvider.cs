@@ -12,7 +12,7 @@ namespace Payments.Domain.Configuration
         public PaymentProviderType GetPaymentProviderType(string country, string system, string currency)
         {
             //TODO: Read it from read models
-            return country.Length % 2 == 0 ? PaymentProviderType.Adyen : PaymentProviderType.JPM;
+            return country.Length % 2 == 0 ? PaymentProviderType.TestProvider1 : PaymentProviderType.TestProvider2;
         }
     }
 }
