@@ -3,6 +3,7 @@ using EventFlow.Extensions;
 using EventFlow.MsSql;
 using EventFlow.MsSql.EventStores;
 using EventFlow.MsSql.Extensions;
+using EventFlow.MsSql.SnapshotStores;
 using EventFlow.ServiceProvider.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -63,6 +64,7 @@ namespace Payments.WebApi
         {
             var msSqlDatabaseMigrator = serviceProvider.GetService<IMsSqlDatabaseMigrator>();
             EventFlowEventStoresMsSql.MigrateDatabase(msSqlDatabaseMigrator);
+            EventFlowSnapshotStoresMsSql.MigrateDatabase(msSqlDatabaseMigrator);
         }
     }
 }

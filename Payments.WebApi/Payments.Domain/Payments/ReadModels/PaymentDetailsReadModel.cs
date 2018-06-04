@@ -1,12 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using EventFlow.Aggregates;
+﻿using EventFlow.Aggregates;
 using EventFlow.MsSql.ReadStores.Attributes;
 using EventFlow.ReadStores;
 using Payments.Domain.Payments.Events;
 
 namespace Payments.Domain.Payments.ReadModels
 {
-    [Table("ReadModel-PaymentDetailsReadModel")]
     public class PaymentDetailsReadModel : IReadModel,
         IAmReadModelFor<PaymentAggregate, PaymentId, PaymentProcessStarted>,
         IAmReadModelFor<PaymentAggregate, PaymentId, PaymentProcessCancelled>

@@ -15,6 +15,7 @@ namespace Payments.Application.Payments
             string externalCallbackUrl, decimal amount);
 
         Task CancelPaymentProcessAsync(string externalId);
+        Task PingAsync(string externalId);
     }
     public class PaymentsApplicationService : IPaymentsApplicationService
     {
@@ -62,6 +63,22 @@ namespace Payments.Application.Payments
             if (!cancelPaymentProcessResult.IsSuccess)
             {
                 throw new InvalidOperationException("Payment cancellation process failed");
+            }
+        }
+
+        public async Task PingAsync(string externalId)
+        {
+            var paymentDetails = await _queryProcessor.ProcessAsync(new GetPaymentDetailsQuery(externalId), CancellationToken.None)
+                .ConfigureAwait(false);
+            if (paymentDetails == null)
+            {
+                throw new InvalidOperationException($"Payment for external id: {externalId} does not exists!");
+            }
+
+            var cancelPaymentProcessResult = await _commandBus.PublishAsync(new PingPaymentProcessCommand(PaymentId.With(paymentDetails.PaymentId)), CancellationToken.None);
+            if (!cancelPaymentProcessResult.IsSuccess)
+            {
+                throw new InvalidOperationException("Payment ping process failed");
             }
         }
     }

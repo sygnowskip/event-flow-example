@@ -2,9 +2,9 @@
 -- Create table template SQL Azure Database 
 -- =========================================
 
-DROP TABLE [dbo].[ReadModel-PaymentDetailsReadModel];
+DROP TABLE [dbo].[ReadModel-PaymentDetails];
 
-CREATE TABLE [dbo].[ReadModel-PaymentDetailsReadModel](
+CREATE TABLE [dbo].[ReadModel-PaymentDetails](
 	[PaymentId] [nvarchar](255) NOT NULL,
 	[Country] [nvarchar](255) NOT NULL,
 	[Currency] [nvarchar](255) NOT NULL,

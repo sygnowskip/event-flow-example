@@ -31,5 +31,15 @@ namespace Payments.WebApi.Controllers
                 request.Currency, request.System, request.ExternalId, request.ExternalCallbackUrl, request.Amount);
             return Ok(redirectUrl);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Ping(string externalId)
+        {
+            if (string.IsNullOrWhiteSpace(externalId))
+                return BadRequest();
+
+            await _paymentsApplicationService.PingAsync(externalId);
+            return Ok();
+        }
     }
 }

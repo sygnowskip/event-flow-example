@@ -13,7 +13,8 @@ namespace Payments.Domain.Payments
 
     public class PaymentState : AggregateState<PaymentAggregate, PaymentId, PaymentState>,
         IApply<PaymentProcessStarted>,
-        IApply<PaymentProcessCancelled>
+        IApply<PaymentProcessCancelled>,
+        IApply<PaymentProcessPinged>
     {
         public PaymentStatus Status { get; private set; }
         public string Country { get; private set; }
@@ -22,6 +23,19 @@ namespace Payments.Domain.Payments
         public decimal Amount { get; private set; }
         public string ExternalId { get; private set; }
         public string ExternalCallbackUrl { get; private set; }
+        public int Ping { get; private set; }
+
+        internal void Load(PaymentState stateToLoad)
+        {
+            Status = stateToLoad.Status;
+            Country = stateToLoad.Country;
+            Currency = stateToLoad.Currency;
+            System = stateToLoad.System;
+            Amount = stateToLoad.Amount;
+            ExternalId = stateToLoad.ExternalId;
+            ExternalCallbackUrl = stateToLoad.ExternalCallbackUrl;
+            Ping = stateToLoad.Ping;
+        }
 
         public void Apply(PaymentProcessStarted aggregateEvent)
         {
@@ -37,6 +51,11 @@ namespace Payments.Domain.Payments
         public void Apply(PaymentProcessCancelled aggregateEvent)
         {
             Status = PaymentStatus.Cancelled;
+        }
+
+        public void Apply(PaymentProcessPinged aggregateEvent)
+        {
+            Ping++;
         }
     }
 }
