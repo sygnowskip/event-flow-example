@@ -9,7 +9,7 @@ namespace Payments.Domain.Payments.Specifications
         {
             if (aggregate.PaymentStatus != PaymentStatus.Started)
             {
-                yield return $"Payment cannot be cancelled";
+                yield return $"PaymentState cannot be cancelled";
             }
         }
     }

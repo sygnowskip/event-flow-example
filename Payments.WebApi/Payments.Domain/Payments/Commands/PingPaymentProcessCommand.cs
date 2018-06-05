@@ -13,10 +13,9 @@ namespace Payments.Domain.Payments.Commands
 
     public class PingPaymentProcessCommandHandler : CommandHandler<PaymentAggregate, PaymentId, PingPaymentProcessCommand>
     {
-        public override Task ExecuteAsync(PaymentAggregate aggregate, PingPaymentProcessCommand command, CancellationToken cancellationToken)
+        public override async Task ExecuteAsync(PaymentAggregate aggregate, PingPaymentProcessCommand command, CancellationToken cancellationToken)
         {
-            aggregate.Ping();
-            return Task.CompletedTask;
+            await aggregate.PingAsync();
         }
     }
 }

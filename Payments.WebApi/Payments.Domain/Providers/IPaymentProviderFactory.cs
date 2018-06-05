@@ -28,7 +28,7 @@ namespace Payments.Domain.Providers
 
             if (paymentProvider == null)
             {
-                throw new InvalidOperationException($"Cannot find a payment provider for {paymentProviderType}");
+                throw new InvalidOperationException($"Cannot find a paymentState provider for {paymentProviderType}");
             }
             return paymentProvider;
         }

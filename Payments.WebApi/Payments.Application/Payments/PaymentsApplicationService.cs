@@ -35,7 +35,7 @@ namespace Payments.Application.Payments
                 .ProcessAsync(new GetPaymentDetailsQuery(externalId), CancellationToken.None);
             if (paymentDetails != null)
             {
-                throw new InvalidOperationException($"Payment for external id: {externalId} already exists!");
+                throw new InvalidOperationException($"PaymentState for external id: {externalId} already exists!");
             }
 
             var beginPaymentProcessResult = await _commandBus.PublishAsync(new BeginPaymentProcessCommand(PaymentId.New, country, currency,
@@ -43,7 +43,7 @@ namespace Payments.Application.Payments
 
             if (!beginPaymentProcessResult.IsSuccess)
             {
-                throw new InvalidOperationException("Begin payment process failed");
+                throw new InvalidOperationException("Begin paymentState process failed");
             }
 
             return beginPaymentProcessResult.RedirectUrl;
@@ -55,14 +55,14 @@ namespace Payments.Application.Payments
                 .ConfigureAwait(false);
             if (paymentDetails == null)
             {
-                throw new InvalidOperationException($"Payment for external id: {externalId} does not exists!");
+                throw new InvalidOperationException($"PaymentState for external id: {externalId} does not exists!");
             }
 
             var cancelPaymentProcessResult = await _commandBus.PublishAsync(new CancelPaymentProcessCommand(PaymentId.With(paymentDetails.PaymentId)), CancellationToken.None);
 
             if (!cancelPaymentProcessResult.IsSuccess)
             {
-                throw new InvalidOperationException("Payment cancellation process failed");
+                throw new InvalidOperationException("PaymentState cancellation process failed");
             }
         }
 
@@ -72,13 +72,13 @@ namespace Payments.Application.Payments
                 .ConfigureAwait(false);
             if (paymentDetails == null)
             {
-                throw new InvalidOperationException($"Payment for external id: {externalId} does not exists!");
+                throw new InvalidOperationException($"PaymentState for external id: {externalId} does not exists!");
             }
 
             var cancelPaymentProcessResult = await _commandBus.PublishAsync(new PingPaymentProcessCommand(PaymentId.With(paymentDetails.PaymentId)), CancellationToken.None);
             if (!cancelPaymentProcessResult.IsSuccess)
             {
-                throw new InvalidOperationException("Payment ping process failed");
+                throw new InvalidOperationException("PaymentState ping process failed");
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using EventFlow.Aggregates;
+﻿using System;
+using EventFlow.Aggregates;
 using Payments.Domain.Payments.Events;
 
 namespace Payments.Domain.Payments
@@ -11,30 +12,30 @@ namespace Payments.Domain.Payments
         Completed
     }
 
-    public class PaymentState : AggregateState<PaymentAggregate, PaymentId, PaymentState>,
-        IApply<PaymentProcessStarted>,
-        IApply<PaymentProcessCancelled>,
-        IApply<PaymentProcessPinged>
+    public class PaymentState : AggregateState<PaymentAggregate, PaymentId, PaymentState>
     {
-        public PaymentStatus Status { get; private set; }
-        public string Country { get; private set; }
-        public string Currency { get; private set; }
-        public string System { get; private set; }
-        public decimal Amount { get; private set; }
-        public string ExternalId { get; private set; }
-        public string ExternalCallbackUrl { get; private set; }
-        public int Ping { get; private set; }
+        public PaymentStatus Status { get; set; }
+        public string Country { get; set; }
+        public string Currency { get; set; }
+        public string System { get; set; }
+        public decimal Amount { get; set; }
+        public string ExternalId { get; set; }
+        public string ExternalCallbackUrl { get; set; }
+        public int Ping { get; set; }
+        public Uri RedirectUrl { get; set; }
+        public string MachineState { get; set; }
 
-        internal void Load(PaymentState stateToLoad)
+        internal void Load(PaymentState toLoad)
         {
-            Status = stateToLoad.Status;
-            Country = stateToLoad.Country;
-            Currency = stateToLoad.Currency;
-            System = stateToLoad.System;
-            Amount = stateToLoad.Amount;
-            ExternalId = stateToLoad.ExternalId;
-            ExternalCallbackUrl = stateToLoad.ExternalCallbackUrl;
-            Ping = stateToLoad.Ping;
+            Status = toLoad.Status;
+            Country = toLoad.Country;
+            Currency = toLoad.Currency;
+            System = toLoad.System;
+            Amount = toLoad.Amount;
+            ExternalId = toLoad.ExternalId;
+            ExternalCallbackUrl = toLoad.ExternalCallbackUrl;
+            Ping = toLoad.Ping;
+            MachineState = toLoad.MachineState;
         }
 
         public void Apply(PaymentProcessStarted aggregateEvent)
@@ -46,11 +47,14 @@ namespace Payments.Domain.Payments
             ExternalId = aggregateEvent.ExternalId;
             ExternalCallbackUrl = aggregateEvent.ExternalCallbackUrl;
             Status = PaymentStatus.Started;
+            RedirectUrl = aggregateEvent.RedirectUrl;
+            MachineState = aggregateEvent.MachineState;
         }
 
         public void Apply(PaymentProcessCancelled aggregateEvent)
         {
             Status = PaymentStatus.Cancelled;
+            MachineState = aggregateEvent.MachineState;
         }
 
         public void Apply(PaymentProcessPinged aggregateEvent)

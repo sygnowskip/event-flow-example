@@ -30,7 +30,7 @@ namespace Payments.Domain.Payments.Queries
         public async Task<PaymentDetailsReadModel> ExecuteQueryAsync(GetPaymentDetailsQuery query, CancellationToken cancellationToken)
         {
             var readModel = await _msSqlConnection.QueryAsync<PaymentDetailsReadModel>(
-                    Label.Named("mssql-get-payment-details-read-model"),
+                    Label.Named("mssql-get-paymentState-details-read-model"),
                     cancellationToken,
                     $"SELECT * FROM [ReadModel-PaymentDetails] WHERE {nameof(PaymentDetailsReadModel.ExternalId)} = @{nameof(query.ExternalId)}",
                     new { query.ExternalId })

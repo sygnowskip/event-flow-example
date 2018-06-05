@@ -13,10 +13,9 @@ namespace Payments.Domain.Payments.Commands
 
     public class CancelPaymentProcessCommandHandler : CommandHandler<PaymentAggregate, PaymentId, CancelPaymentProcessCommand>
     {
-        public override Task ExecuteAsync(PaymentAggregate aggregate, CancelPaymentProcessCommand command, CancellationToken cancellationToken)
+        public override async Task ExecuteAsync(PaymentAggregate aggregate, CancelPaymentProcessCommand command, CancellationToken cancellationToken)
         {
-            aggregate.CancelPaymentProcess();
-            return Task.CompletedTask;
+            await aggregate.CancelPaymentProcessAsync();
         }
     }
 }
