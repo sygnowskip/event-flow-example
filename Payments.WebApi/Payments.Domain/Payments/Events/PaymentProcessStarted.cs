@@ -5,7 +5,7 @@ namespace Payments.Domain.Payments.Events
 {
     public class PaymentProcessStarted : AggregateEvent<PaymentAggregate, PaymentId>
     {
-        public PaymentProcessStarted(string country, string currency, string system, decimal amount, string externalId, string externalCallbackUrl, Uri redirectUrl, string machineState)
+        public PaymentProcessStarted(string country, string currency, string system, decimal amount, string externalId, string externalCallbackUrl, Uri redirectUrl)
         {
             Country = country;
             Currency = currency;
@@ -14,7 +14,6 @@ namespace Payments.Domain.Payments.Events
             ExternalId = externalId;
             ExternalCallbackUrl = externalCallbackUrl;
             RedirectUrl = redirectUrl;
-            MachineState = machineState;
         }
 
         public string Country { get; }
@@ -25,6 +24,5 @@ namespace Payments.Domain.Payments.Events
         public string ExternalCallbackUrl { get; }
         public Uri RedirectUrl { get; }
         public PaymentStatus Status { get; } = PaymentStatus.Started;
-        public string MachineState { get; }
     }
 }

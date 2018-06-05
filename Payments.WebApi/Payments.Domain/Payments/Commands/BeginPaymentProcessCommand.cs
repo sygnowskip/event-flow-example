@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Automatonymous;
 using EventFlow.Aggregates.ExecutionResults;
 using EventFlow.Commands;
+using Payments.Domain.Payments.StateMachine.Activities;
 
 namespace Payments.Domain.Payments.Commands
 {
@@ -43,9 +45,11 @@ namespace Payments.Domain.Payments.Commands
     {
         public override async Task<BeginPaymentProcessCommandResult> ExecuteCommandAsync(PaymentAggregate aggregate, BeginPaymentProcessCommand command, CancellationToken cancellationToken)
         {
-            var redirectUrl = await aggregate.BeginPaymentProcessAsync(command.Country, command.Currency, command.System, command.ExternalId, command.ExternalCallbackUrl,
-                command.Amount);
-            return new BeginPaymentProcessCommandResult(true, redirectUrl);
+            var stateMachine = new PaymentStateMachine(aggregate);
+            await stateMachine.RaiseEvent(aggregate.PaymentState, stateMachine.PaymentInitiationRequested,
+                new BeginPaymentProcessData(command.Country, command.Currency, command.System, command.Amount, command.ExternalId, command.ExternalCallbackUrl), cancellationToken);
+
+            return new BeginPaymentProcessCommandResult(true, aggregate.PaymentState.RedirectUrl);
         }
     }
 }

@@ -6,14 +6,18 @@ namespace Payments.Domain.Payments
 {
     public enum PaymentStatus
     {
-        Started = 1,
-        Cancelled,
-        Failed,
-        Completed
+        Started = 3,
+        Cancelled
     }
 
     public class PaymentState : AggregateState<PaymentAggregate, PaymentId, PaymentState>
     {
+        public int StateMachineState
+        {
+            get => (int)Status;
+            set => Status = (PaymentStatus)value;
+        }
+
         public PaymentStatus Status { get; set; }
         public string Country { get; set; }
         public string Currency { get; set; }
@@ -23,7 +27,6 @@ namespace Payments.Domain.Payments
         public string ExternalCallbackUrl { get; set; }
         public int Ping { get; set; }
         public Uri RedirectUrl { get; set; }
-        public string MachineState { get; set; }
 
         internal void Load(PaymentState toLoad)
         {
@@ -35,7 +38,6 @@ namespace Payments.Domain.Payments
             ExternalId = toLoad.ExternalId;
             ExternalCallbackUrl = toLoad.ExternalCallbackUrl;
             Ping = toLoad.Ping;
-            MachineState = toLoad.MachineState;
         }
 
         public void Apply(PaymentProcessStarted aggregateEvent)
@@ -48,13 +50,11 @@ namespace Payments.Domain.Payments
             ExternalCallbackUrl = aggregateEvent.ExternalCallbackUrl;
             Status = PaymentStatus.Started;
             RedirectUrl = aggregateEvent.RedirectUrl;
-            MachineState = aggregateEvent.MachineState;
         }
 
         public void Apply(PaymentProcessCancelled aggregateEvent)
         {
             Status = PaymentStatus.Cancelled;
-            MachineState = aggregateEvent.MachineState;
         }
 
         public void Apply(PaymentProcessPinged aggregateEvent)
