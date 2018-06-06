@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EventFlow.Core;
@@ -30,12 +31,11 @@ namespace Payments.Domain.Payments.Queries
         public async Task<PaymentDetailsReadModel> ExecuteQueryAsync(GetPaymentDetailsQuery query, CancellationToken cancellationToken)
         {
             var readModel = await _msSqlConnection.QueryAsync<PaymentDetailsReadModel>(
-                    Label.Named("mssql-get-paymentState-details-read-model"),
-                    cancellationToken,
-                    $"SELECT * FROM [ReadModel-PaymentDetails] WHERE {nameof(PaymentDetailsReadModel.ExternalId)} = @{nameof(query.ExternalId)}",
-                    new { query.ExternalId })
-                .ConfigureAwait(false);
-
+                           Label.Named("mssql-get-paymentState-details-read-model"),
+                           cancellationToken,
+                           $"SELECT * FROM [ReadModel-PaymentDetails] WHERE {nameof(PaymentDetailsReadModel.ExternalId)} = @{nameof(query.ExternalId)}",
+                           new { query.ExternalId })
+                       .ConfigureAwait(false);
             return readModel.SingleOrDefault();
         }
     }

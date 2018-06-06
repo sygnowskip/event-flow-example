@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payments.WebApi", "Payments
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payments.Domain", "Payments.Domain\Payments.Domain.csproj", "{402BB23B-9E11-4A3A-8247-C9A07F87B83D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.Application", "Payments.Application\Payments.Application.csproj", "{C8E99081-C301-436F-A75B-97BB980045AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payments.Application", "Payments.Application\Payments.Application.csproj", "{C8E99081-C301-436F-A75B-97BB980045AC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventFlow.ServiceProvider", "EventFlow.ServiceProvider\EventFlow.ServiceProvider.csproj", "{DE5AEECD-AAF1-447C-A4C1-41C80EF7647F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.StressTests", "Payments.StressTests\Payments.StressTests.csproj", "{83018EA8-72E4-47A1-BC87-8700F784C41D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{DE5AEECD-AAF1-447C-A4C1-41C80EF7647F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE5AEECD-AAF1-447C-A4C1-41C80EF7647F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE5AEECD-AAF1-447C-A4C1-41C80EF7647F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83018EA8-72E4-47A1-BC87-8700F784C41D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83018EA8-72E4-47A1-BC87-8700F784C41D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83018EA8-72E4-47A1-BC87-8700F784C41D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83018EA8-72E4-47A1-BC87-8700F784C41D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

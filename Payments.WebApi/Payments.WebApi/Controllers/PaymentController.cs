@@ -32,7 +32,7 @@ namespace Payments.WebApi.Controllers
             return Ok(redirectUrl);
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Ping(string externalId)
         {
             if (string.IsNullOrWhiteSpace(externalId))
