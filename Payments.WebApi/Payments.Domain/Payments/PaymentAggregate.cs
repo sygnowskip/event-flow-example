@@ -16,6 +16,12 @@ namespace Payments.Domain.Payments
         private readonly IPaymentProviderFactory _paymentProviderFactory;
         public PaymentState PaymentState { get; } = new PaymentState();
 
+        public int StateMachineState
+        {
+            get => (int)PaymentState.Status;
+            set => PaymentState.Status = (PaymentStatus)value;
+        }
+
         public PaymentAggregate(PaymentId id, IPaymentProviderFactory paymentProviderFactory) : base(id,
             SnapshotEveryFewVersionsStrategy.With(SnapshotEveryVersion))
         {

@@ -1,26 +1,43 @@
-﻿using Automatonymous;
-using Payments.Domain.Payments.StateMachine.Activities;
+﻿using System.Threading.Tasks;
+using Automatonymous;
+using Payments.Domain.Payments.StateMachine.Models;
 
-namespace Payments.Domain.Payments
+namespace Payments.Domain.Payments.StateMachine
 {
-    public class PaymentStateMachine : AutomatonymousStateMachine<PaymentState>
+    public class PaymentStateMachine : AutomatonymousStateMachine<PaymentAggregate>
     {
-        public PaymentStateMachine(PaymentAggregate paymentAggregate)
+        public PaymentStateMachine()
         {
             InstanceState(x => x.StateMachineState, Started, Cancelled);
 
             Initially(
                 When(PaymentInitiationRequested)
-                    .Execute(context => new BeginPaymentProcess(paymentAggregate))
+                    .ThenAsync(BeginPaymentProcesss)
                     .TransitionTo(Started));
 
             During(Started,
                 When(PaymentPingRequested)
-                    .Execute(context => new PingPayment(paymentAggregate)),
+                    .Then(PingPayment),
                 When(PaymentCancellationRequested)
-                    .Execute(context => new CancelPaymentProcess(paymentAggregate))
+                    .Then(CancelPaymentProcess)
                     .TransitionTo(Cancelled)
                     .Finalize());
+        }
+
+        private async Task BeginPaymentProcesss(BehaviorContext<PaymentAggregate, BeginPaymentProcessData> ctx)
+        {
+            await ctx.Instance.BeginPaymentProcessAsync(ctx.Data.Country, ctx.Data.Currency,
+                ctx.Data.System, ctx.Data.ExternalId, ctx.Data.ExternalCallbackUrl, ctx.Data.Amount);
+        }
+
+        private void PingPayment(BehaviorContext<PaymentAggregate> context)
+        {
+            context.Instance.Ping();
+        }
+
+        private void CancelPaymentProcess(BehaviorContext<PaymentAggregate> context)
+        {
+            context.Instance.Ping();
         }
 
         public Event<BeginPaymentProcessData> PaymentInitiationRequested { get; private set; }

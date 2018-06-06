@@ -12,12 +12,6 @@ namespace Payments.Domain.Payments
 
     public class PaymentState : AggregateState<PaymentAggregate, PaymentId, PaymentState>
     {
-        public int StateMachineState
-        {
-            get => (int)Status;
-            set => Status = (PaymentStatus)value;
-        }
-
         public PaymentStatus Status { get; set; }
         public string Country { get; set; }
         public string Currency { get; set; }

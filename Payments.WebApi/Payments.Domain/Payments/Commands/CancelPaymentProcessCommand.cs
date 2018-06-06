@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Automatonymous;
 using EventFlow.Commands;
+using Payments.Domain.Payments.StateMachine;
 
 namespace Payments.Domain.Payments.Commands
 {
@@ -16,8 +17,8 @@ namespace Payments.Domain.Payments.Commands
     {
         public override async Task ExecuteAsync(PaymentAggregate aggregate, CancelPaymentProcessCommand command, CancellationToken cancellationToken)
         {
-            var stateMachine = new PaymentStateMachine(aggregate);
-            await stateMachine.RaiseEvent(aggregate.PaymentState, stateMachine.PaymentCancellationRequested, cancellationToken);
+            var stateMachine = new PaymentStateMachine();
+            await stateMachine.RaiseEvent(aggregate, stateMachine.PaymentCancellationRequested, cancellationToken);
         }
     }
 }
