@@ -37,7 +37,7 @@ namespace Payments.Domain.Payments.StateMachine
 
         private void CancelPaymentProcess(BehaviorContext<PaymentAggregate> context)
         {
-            context.Instance.Ping();
+            context.Instance.CancelPaymentProcess();
         }
 
         public Event<BeginPaymentProcessData> PaymentInitiationRequested { get; private set; }
