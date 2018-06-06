@@ -16,7 +16,7 @@ namespace Payments.StressTests
         private Uri ApiBaseUrl { get; }
         private HttpClient HttpClient { get; } = new HttpClient();
         private int PingCounts { get; }
-        private readonly IList<long> _responseTimes = new List<long>();
+        public IList<long> ResponseTimes { get; }= new List<long>();
         private bool Verbose { get; }
 
         public PaymentProcessTest(string apiBaseUrl, bool verbose)
@@ -42,13 +42,8 @@ namespace Payments.StressTests
         public void PrintSummary()
         {
             Console.WriteLine($"--- SUMMARY FOR {ExternalId} ---");
-            Console.WriteLine($"Total calls: {_responseTimes.Count}, average response time: {string.Format("{0:N2}", GetAverageResponseTime()) } miliseconds");
+            Console.WriteLine($"Total calls: {ResponseTimes.Count}, average response time: {string.Format("{0:N2}", (double)ResponseTimes.Sum() / ResponseTimes.Count) } miliseconds");
             Console.WriteLine("--------------------------------");
-        }
-
-        public double GetAverageResponseTime()
-        {
-            return (double)_responseTimes.Sum() / _responseTimes.Count;
         }
 
         private async Task BeginProcess()
@@ -92,7 +87,7 @@ namespace Payments.StressTests
             {
                 Console.WriteLine($"{httpCallName} for {ExternalId} in {timer.ElapsedMilliseconds} miliseconds");
             }
-            _responseTimes.Add(timer.ElapsedMilliseconds);
+            ResponseTimes.Add(timer.ElapsedMilliseconds);
         }
     }
 }
