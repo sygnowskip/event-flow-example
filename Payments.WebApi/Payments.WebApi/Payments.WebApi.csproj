@@ -16,5 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EventFlow.ServiceProvider\EventFlow.ServiceProvider.csproj" />
     <ProjectReference Include="..\Payments.Application\Payments.Application.csproj" />
+    <ProjectReference Include="..\Payments.Domain.Orders\Payments.Domain.Orders.csproj" />
+    <ProjectReference Include="..\Payments.Domain.Payments\Payments.Domain.Payments.csproj" />
   </ItemGroup>
 </Project>
