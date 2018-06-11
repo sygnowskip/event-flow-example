@@ -1,16 +1,20 @@
 ﻿using System;
 using EventFlow.Aggregates;
-using Payments.Domain.Payments.Payments.Events;
+using Payments.Domain.Payments.Events;
 
 namespace Payments.Domain.Payments.Payments
 {
     public enum PaymentStatus
     {
         Started = 3,
-        Cancelled
+        Cancelled,
+        Completed
     }
 
-    public class PaymentState : AggregateState<PaymentAggregate, PaymentId, PaymentState>
+    public class PaymentState : AggregateState<PaymentAggregate, PaymentId, PaymentState>,
+        IApply<PaymentProcessStarted>,
+        IApply<PaymentProcessCancelled>,
+        IApply<PaymentProcessPinged>
     {
         public PaymentStatus Status { get; set; }
         public string Country { get; set; }

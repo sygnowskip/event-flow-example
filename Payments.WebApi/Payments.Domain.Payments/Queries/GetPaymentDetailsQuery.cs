@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using EventFlow.Core;
 using EventFlow.MsSql;
 using EventFlow.Queries;
-using Payments.Domain.Payments.Payments.ReadModels;
+using Payments.Domain.Payments.ReadModels;
 
-namespace Payments.Domain.Payments.Payments.Queries
+namespace Payments.Domain.Payments.Queries
 {
     public class GetPaymentDetailsQuery : IQuery<PaymentDetailsReadModel>
     {

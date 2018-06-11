@@ -3,9 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using EventFlow.Snapshots;
 using EventFlow.Snapshots.Strategies;
-using Payments.Domain.Payments.Payments.Events;
-using Payments.Domain.Payments.Payments.Snapshots;
+using Payments.Domain.Payments.Events;
 using Payments.Domain.Payments.Providers;
+using Payments.Domain.Payments.Snapshots;
 
 namespace Payments.Domain.Payments.Payments
 {
@@ -48,7 +48,10 @@ namespace Payments.Domain.Payments.Payments
         public void CancelPaymentProcess()
         {
             Emit(new PaymentProcessCancelled());
-
+        }
+        public void CompletePaymentProcess()
+        {
+            Emit(new PaymentProcessCompleted());
         }
 
         public void Ping()

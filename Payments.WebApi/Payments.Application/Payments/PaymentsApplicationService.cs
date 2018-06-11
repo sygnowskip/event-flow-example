@@ -3,9 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using EventFlow;
 using EventFlow.Queries;
+using Payments.Domain.Payments.Commands;
 using Payments.Domain.Payments.Payments;
-using Payments.Domain.Payments.Payments.Commands;
-using Payments.Domain.Payments.Payments.Queries;
+using Payments.Domain.Payments.Queries;
 
 namespace Payments.Application.Payments
 {

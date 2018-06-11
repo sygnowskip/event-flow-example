@@ -11,9 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Payments.Application.Payments;
 using Payments.Domain.Payments.Payments;
-using Payments.Domain.Payments.Payments.ReadModels;
 using Payments.Domain.Payments.Providers;
 using Payments.Domain.Payments.Providers.Types;
+using Payments.Domain.Payments.ReadModels;
 
 namespace Payments.WebApi
 {

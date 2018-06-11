@@ -1,14 +1,15 @@
 ﻿using System.Threading.Tasks;
 using Automatonymous;
-using Payments.Domain.Payments.Payments.StateMachine.Models;
+using Payments.Domain.Payments.Payments;
+using Payments.Domain.Payments.StateMachine.Models;
 
-namespace Payments.Domain.Payments.Payments.StateMachine
+namespace Payments.Domain.Payments.StateMachine
 {
     public class PaymentStateMachine : AutomatonymousStateMachine<PaymentAggregate>
     {
         public PaymentStateMachine()
         {
-            InstanceState(x => x.StateMachineState, Started, Cancelled);
+            InstanceState(x => x.StateMachineState, Started, Cancelled, Completed);
 
             Initially(
                 When(PaymentInitiationRequested)
@@ -18,6 +19,10 @@ namespace Payments.Domain.Payments.Payments.StateMachine
             During(Started,
                 When(PaymentPingRequested)
                     .Then(PingPayment),
+                When(PaymentCompletionRequested)
+                    .Then(CompletePaymentProcess)
+                    .TransitionTo(Completed)
+                    .Finalize(),
                 When(PaymentCancellationRequested)
                     .Then(CancelPaymentProcess)
                     .TransitionTo(Cancelled)
@@ -40,11 +45,18 @@ namespace Payments.Domain.Payments.Payments.StateMachine
             context.Instance.CancelPaymentProcess();
         }
 
+        private void CompletePaymentProcess(BehaviorContext<PaymentAggregate> context)
+        {
+            context.Instance.CompletePaymentProcess();
+        }
+
         public Event<BeginPaymentProcessData> PaymentInitiationRequested { get; private set; }
         public Event PaymentCancellationRequested { get; private set; }
+        public Event PaymentCompletionRequested { get; private set; }
         public Event PaymentPingRequested { get; private set; }
 
         public State Started { get; private set; }
         public State Cancelled { get; private set; }
+        public State Completed { get; private set; }
     }
 }

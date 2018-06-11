@@ -1,9 +1,10 @@
 ﻿using EventFlow.Aggregates;
 using EventFlow.MsSql.ReadStores.Attributes;
 using EventFlow.ReadStores;
-using Payments.Domain.Payments.Payments.Events;
+using Payments.Domain.Payments.Events;
+using Payments.Domain.Payments.Payments;
 
-namespace Payments.Domain.Payments.Payments.ReadModels
+namespace Payments.Domain.Payments.ReadModels
 {
     public class PaymentDetailsReadModel : IReadModel,
         IAmReadModelFor<PaymentAggregate, PaymentId, PaymentProcessStarted>,

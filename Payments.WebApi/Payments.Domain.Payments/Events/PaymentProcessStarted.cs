@@ -1,7 +1,8 @@
 ﻿using System;
 using EventFlow.Aggregates;
+using Payments.Domain.Payments.Payments;
 
-namespace Payments.Domain.Payments.Payments.Events
+namespace Payments.Domain.Payments.Events
 {
     public class PaymentProcessStarted : AggregateEvent<PaymentAggregate, PaymentId>
     {

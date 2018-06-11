@@ -2,9 +2,10 @@
 using System.Threading.Tasks;
 using Automatonymous;
 using EventFlow.Commands;
-using Payments.Domain.Payments.Payments.StateMachine;
+using Payments.Domain.Payments.Payments;
+using Payments.Domain.Payments.StateMachine;
 
-namespace Payments.Domain.Payments.Payments.Commands
+namespace Payments.Domain.Payments.Commands
 {
     public class PingPaymentProcessCommand : Command<PaymentAggregate, PaymentId>
     {

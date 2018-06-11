@@ -1,13 +1,14 @@
-﻿using Automatonymous;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Automatonymous;
 using EventFlow.Aggregates.ExecutionResults;
 using EventFlow.Commands;
-using Payments.Domain.Payments.Payments.StateMachine;
-using Payments.Domain.Payments.Payments.StateMachine.Models;
+using Payments.Domain.Payments.Payments;
+using Payments.Domain.Payments.StateMachine;
+using Payments.Domain.Payments.StateMachine.Models;
 
-namespace Payments.Domain.Payments.Payments.Commands
+namespace Payments.Domain.Payments.Commands
 {
     public class BeginPaymentProcessCommand : Command<PaymentAggregate, PaymentId, BeginPaymentProcessCommandResult>
     {

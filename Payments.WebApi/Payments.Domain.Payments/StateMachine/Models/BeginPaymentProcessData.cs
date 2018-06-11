@@ -1,4 +1,4 @@
-﻿namespace Payments.Domain.Payments.Payments.StateMachine.Models
+﻿namespace Payments.Domain.Payments.StateMachine.Models
 {
     public class BeginPaymentProcessData
     {
