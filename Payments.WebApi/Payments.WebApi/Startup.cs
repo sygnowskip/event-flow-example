@@ -9,8 +9,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Payments.Application.Payments;
-using Payments.Domain.Payments.Payments;
+using Payments.Application;
+using Payments.Domain.Payments;
 using Payments.Domain.Payments.Providers;
 using Payments.Domain.Payments.Providers.Types;
 using Payments.Domain.Payments.ReadModels;
@@ -32,7 +32,7 @@ namespace Payments.WebApi
             services.AddTransient<IPaymentProviderFactory, PaymentProviderFactory>();
             services.AddTransient<IPaymentProvider, TestProvider2PaymentProvider>();
             services.AddTransient<IPaymentProvider, TestProvider1PaymentProvider>();
-            services.AddTransient<Domain.Payments.Configuration.IConfigurationProvider, Domain.Payments.Configuration.ConfigurationProvider>();
+            services.AddTransient<Domain.Payments.Providers.IConfigurationProvider, Domain.Payments.Providers.ConfigurationProvider>();
             services.AddTransient<IPaymentsApplicationService, PaymentsApplicationService>();
             services.AddTransient<IOrdersApplicationService, OrdersApplicationService>();
             services.AddEventFlow(options => options

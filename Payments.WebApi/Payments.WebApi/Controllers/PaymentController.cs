@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Payments.Application.Payments;
+using Payments.Application;
 
 namespace Payments.WebApi.Controllers
 {

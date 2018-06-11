@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using EventFlow;
 using EventFlow.Queries;
 using Payments.Domain.Payments.Commands;
-using Payments.Domain.Payments.Payments;
 using Payments.Domain.Payments.Queries;
+using Payments.Domain.Payments;
 
-namespace Payments.Application.Payments
+namespace Payments.Application
 {
     public interface IPaymentsApplicationService
     {

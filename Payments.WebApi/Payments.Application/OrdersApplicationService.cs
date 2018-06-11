@@ -2,10 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using EventFlow;
-using Payments.Domain.Orders;
 using Payments.Domain.Orders.Commands;
+using Payments.Domain.Orders;
 
-namespace Payments.Application.Payments
+namespace Payments.Application
 {
     public interface IOrdersApplicationService
     {
