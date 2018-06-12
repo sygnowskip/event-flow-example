@@ -1,23 +1,19 @@
-﻿namespace Payments.Domain.Payments.StateMachine.Models
+﻿using System;
+
+namespace Payments.Domain.Payments.StateMachine.Models
 {
     public class BeginPaymentProcessData
     {
-        public BeginPaymentProcessData(string country, string currency, string system, decimal amount, string externalId, string externalCallbackUrl)
+        public BeginPaymentProcessData(Guid orderId, string username, decimal totalPrice)
         {
-            Country = country;
-            Currency = currency;
-            System = system;
-            Amount = amount;
-            ExternalId = externalId;
-            ExternalCallbackUrl = externalCallbackUrl;
+            OrderId = orderId;
+            Username = username;
+            TotalPrice = totalPrice;
         }
 
-        public string Country { get; }
-        public string Currency { get; }
-        public string System { get; }
-        public decimal Amount { get; }
-        public string ExternalId { get; }
-        public string ExternalCallbackUrl { get; }
+        public Guid OrderId { get; }
+        public string Username { get; }
+        public decimal TotalPrice { get; }
 
     }
 }

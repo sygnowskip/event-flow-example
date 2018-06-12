@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Payments.Application;
 
@@ -14,12 +15,21 @@ namespace Payments.WebApi.Controllers
             _paymentsApplicationService = paymentsApplicationService;
         }
 
-        public async Task<IActionResult> Cancel(string externalId)
+        public async Task<IActionResult> Cancel(Guid? orderId)
         {
-            if (string.IsNullOrWhiteSpace(externalId))
+            if (!orderId.HasValue)
                 return BadRequest();
 
-            await _paymentsApplicationService.CancelPaymentProcessAsync(externalId);
+            await _paymentsApplicationService.CancelPaymentProcessAsync(orderId.Value);
+            return Ok();
+        }
+
+        public async Task<IActionResult> Complete(Guid? orderId)
+        {
+            if (!orderId.HasValue)
+                return BadRequest();
+
+            await _paymentsApplicationService.CompletePaymentProcessAsync(orderId.Value);
             return Ok();
         }
     }

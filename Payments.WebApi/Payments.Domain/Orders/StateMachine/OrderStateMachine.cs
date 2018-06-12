@@ -43,10 +43,9 @@ namespace Payments.Domain.Orders.StateMachine
             return Task.CompletedTask;
         }
 
-        private Task InitPaymentProcess(BehaviorContext<OrderAggregate> context)
+        private async Task InitPaymentProcess(BehaviorContext<OrderAggregate> context)
         {
-            context.Instance.BeginPaymentProcess();
-            return Task.CompletedTask;
+            await context.Instance.BeginPaymentProcess();
         }
 
         private Task AddProductToOrder(BehaviorContext<OrderAggregate, AddProductToOrderData> context)

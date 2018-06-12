@@ -2,7 +2,7 @@
 
 namespace Payments.Domain.Orders.Events
 {
-    public class PaymentProcessCompleted : AggregateEvent<OrderAggregate, OrderId>
+    public class OrderPaymentCompleted : AggregateEvent<OrderAggregate, OrderId>
     {
         
     }

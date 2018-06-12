@@ -29,29 +29,23 @@ namespace Payments.Domain.Payments
             Register(PaymentState);
         }
 
-        public async Task<Uri> BeginPaymentProcessAsync(string country, string currency, string system, string externalId, string externalCallbackUrl,
-            decimal amount)
+        public async Task<Uri> BeginPaymentProcessAsync(Guid orderId, string username, decimal totalPrice)
         {
-            var paymentProvider = _paymentProviderFactory.GetPaymentProvider(country, system, currency);
-            var redirectUrl = await paymentProvider.BeginPaymentProcessAsync(new BeginPaymentProcessModel(
-                Id.ToString(),
-                country,
-                currency,
-                system,
-                amount));
+            var paymentProvider = _paymentProviderFactory.GetPaymentProvider();
+            var redirectUrl = await paymentProvider.BeginPaymentProcessAsync(new BeginPaymentProcessModel(orderId, username, totalPrice));
 
-            Emit(new PaymentProcessStarted(country, currency, system, amount, externalId, externalCallbackUrl, redirectUrl));
+            Emit(new PaymentProcessStarted(orderId, username, totalPrice, redirectUrl));
 
             return PaymentState.RedirectUrl;
         }
 
         public void CancelPaymentProcess()
         {
-            Emit(new PaymentProcessCancelled());
+            Emit(new PaymentProcessCancelled(PaymentState.OrderId));
         }
         public void CompletePaymentProcess()
         {
-            Emit(new PaymentProcessCompleted());
+            Emit(new PaymentProcessCompleted(PaymentState.OrderId));
         }
 
         public void Ping()

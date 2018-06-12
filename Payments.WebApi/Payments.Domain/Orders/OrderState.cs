@@ -28,9 +28,9 @@ namespace Payments.Domain.Orders
     public class OrderState : AggregateState<OrderAggregate, OrderId, OrderState>,
         IApply<OrderCreated>,
         IApply<ProductToOrderAdded>,
-        IApply<PaymentProcessStarted>,
-        IApply<PaymentProcessCompleted>,
-        IApply<PaymentProcessFailed>
+        IApply<OrderPaymentStarted>,
+        IApply<OrderPaymentCompleted>,
+        IApply<OrderPaymentFailed>
     {
         public OrderState()
         {
@@ -58,17 +58,17 @@ namespace Payments.Domain.Orders
             Products.Add(new OrderProduct(aggregateEvent.Name, aggregateEvent.Count, aggregateEvent.Price));
         }
 
-        public void Apply(PaymentProcessCompleted aggregateEvent)
+        public void Apply(OrderPaymentCompleted aggregateEvent)
         {
             Status = OrderStatus.Completed;
         }
 
-        public void Apply(PaymentProcessFailed aggregateEvent)
+        public void Apply(OrderPaymentFailed aggregateEvent)
         {
             Status = OrderStatus.New;
         }
 
-        public void Apply(PaymentProcessStarted aggregateEvent)
+        public void Apply(OrderPaymentStarted aggregateEvent)
         {
             Status = OrderStatus.PaymentInProgress;
         }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EventFlow.Core;
@@ -10,12 +11,12 @@ namespace Payments.Domain.Payments.Queries
 {
     public class GetPaymentDetailsQuery : IQuery<PaymentDetailsReadModel>
     {
-        public GetPaymentDetailsQuery(string externalId)
+        public GetPaymentDetailsQuery(Guid orderId)
         {
-            ExternalId = externalId;
+            OrderId = orderId;
         }
 
-        public string ExternalId { get; }
+        public Guid OrderId { get;  }
     }
 
     public class GetPaymentDetailsQueryHandler : IQueryHandler<GetPaymentDetailsQuery, PaymentDetailsReadModel>
@@ -30,10 +31,10 @@ namespace Payments.Domain.Payments.Queries
         public async Task<PaymentDetailsReadModel> ExecuteQueryAsync(GetPaymentDetailsQuery query, CancellationToken cancellationToken)
         {
             var readModel = await _msSqlConnection.QueryAsync<PaymentDetailsReadModel>(
-                           Label.Named("mssql-get-paymentState-details-read-model"),
+                           Label.Named("mssql-get-payment-state-details-read-model"),
                            cancellationToken,
-                           $"SELECT * FROM [ReadModel-PaymentDetails] WHERE {nameof(PaymentDetailsReadModel.ExternalId)} = @{nameof(query.ExternalId)}",
-                           new { query.ExternalId })
+                           $"SELECT * FROM [ReadModel-PaymentDetails] WHERE {nameof(PaymentDetailsReadModel.OrderId)} = @{nameof(query.OrderId)}",
+                           new { query.OrderId })
                        .ConfigureAwait(false);
             return readModel.SingleOrDefault();
         }

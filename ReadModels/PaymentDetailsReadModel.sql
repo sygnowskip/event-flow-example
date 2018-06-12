@@ -6,12 +6,9 @@ DROP TABLE [dbo].[ReadModel-PaymentDetails];
 
 CREATE TABLE [dbo].[ReadModel-PaymentDetails](
 	[PaymentId] [nvarchar](255) NOT NULL,
-	[Country] [nvarchar](255) NOT NULL,
-	[Currency] [nvarchar](255) NOT NULL,
-	[System] [nvarchar](255) NOT NULL,
-	[Amount] decimal(18,2) NOT NULL,
-	[ExternalId] [nvarchar](255) NOT NULL,
-	[ExternalCallbackUrl] [nvarchar](255) NULL,
+	[Username] [nvarchar](255) NOT NULL,
+	[OrderId] [uniqueidentifier] NOT NULL,
+	[TotalPrice] decimal(18,2) NOT NULL,
 	[Status] [nvarchar](255) NULL,
 	[Version] [int] NULL,
 	PRIMARY KEY(PaymentId)

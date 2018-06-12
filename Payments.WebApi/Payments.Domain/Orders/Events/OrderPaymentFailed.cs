@@ -2,7 +2,7 @@
 
 namespace Payments.Domain.Orders.Events
 {
-    public class PaymentProcessStarted : AggregateEvent<OrderAggregate, OrderId>
+    public class OrderPaymentFailed : AggregateEvent<OrderAggregate, OrderId>
     {
         
     }

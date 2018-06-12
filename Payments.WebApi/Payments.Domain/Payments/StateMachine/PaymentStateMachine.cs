@@ -28,10 +28,10 @@ namespace Payments.Domain.Payments.StateMachine
                     .Finalize());
         }
 
-        private async Task BeginPaymentProcesss(BehaviorContext<PaymentAggregate, BeginPaymentProcessData> ctx)
+        private async Task BeginPaymentProcesss(BehaviorContext<PaymentAggregate, BeginPaymentProcessData> context)
         {
-            await ctx.Instance.BeginPaymentProcessAsync(ctx.Data.Country, ctx.Data.Currency,
-                ctx.Data.System, ctx.Data.ExternalId, ctx.Data.ExternalCallbackUrl, ctx.Data.Amount);
+            await context.Instance.BeginPaymentProcessAsync(context.Data.OrderId, context.Data.Username,
+                context.Data.TotalPrice);
         }
 
         private void PingPayment(BehaviorContext<PaymentAggregate> context)

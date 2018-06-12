@@ -11,19 +11,15 @@ namespace Payments.Domain.Payments.Providers
 
     public class BeginPaymentProcessModel
     {
-        public BeginPaymentProcessModel(string paymentId, string country, string currency, string system, decimal amount)
+        public BeginPaymentProcessModel(Guid orderId, string username, decimal totalPrice)
         {
-            PaymentId = paymentId;
-            Country = country;
-            Currency = currency;
-            System = system;
-            Amount = amount;
+            OrderId = orderId;
+            Username = username;
+            TotalPrice = totalPrice;
         }
 
-        public string PaymentId { get; }
-        public string Country { get; }
-        public string Currency { get; }
-        public string System { get; }
-        public decimal Amount { get; }
+        public Guid OrderId { get; }
+        public string Username { get; }
+        public decimal TotalPrice { get; }
     }
 }

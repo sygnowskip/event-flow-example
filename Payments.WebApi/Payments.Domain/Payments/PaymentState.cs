@@ -14,38 +14,31 @@ namespace Payments.Domain.Payments
     public class PaymentState : AggregateState<PaymentAggregate, PaymentId, PaymentState>,
         IApply<PaymentProcessStarted>,
         IApply<PaymentProcessCancelled>,
+        IApply<PaymentProcessCompleted>,
         IApply<PaymentProcessPinged>
     {
         public PaymentStatus Status { get; set; }
-        public string Country { get; set; }
-        public string Currency { get; set; }
-        public string System { get; set; }
-        public decimal Amount { get; set; }
-        public string ExternalId { get; set; }
-        public string ExternalCallbackUrl { get; set; }
+        public Guid OrderId { get; set; }
+        public string Username { get; set; }
+        public decimal TotalPrice { get; set; }
         public int Ping { get; set; }
         public Uri RedirectUrl { get; set; }
 
         internal void Load(PaymentState toLoad)
         {
             Status = toLoad.Status;
-            Country = toLoad.Country;
-            Currency = toLoad.Currency;
-            System = toLoad.System;
-            Amount = toLoad.Amount;
-            ExternalId = toLoad.ExternalId;
-            ExternalCallbackUrl = toLoad.ExternalCallbackUrl;
+            TotalPrice = toLoad.TotalPrice;
+            Username = toLoad.Username;
+            OrderId = toLoad.OrderId;
+            RedirectUrl = toLoad.RedirectUrl;
             Ping = toLoad.Ping;
         }
 
         public void Apply(PaymentProcessStarted aggregateEvent)
         {
-            Country = aggregateEvent.Country;
-            Currency = aggregateEvent.Currency;
-            System = aggregateEvent.System;
-            Amount = aggregateEvent.Amount;
-            ExternalId = aggregateEvent.ExternalId;
-            ExternalCallbackUrl = aggregateEvent.ExternalCallbackUrl;
+            TotalPrice = aggregateEvent.TotalPrice;
+            Username = aggregateEvent.Username;
+            OrderId = aggregateEvent.OrderId;
             Status = PaymentStatus.Started;
             RedirectUrl = aggregateEvent.RedirectUrl;
         }
@@ -53,6 +46,13 @@ namespace Payments.Domain.Payments
         public void Apply(PaymentProcessCancelled aggregateEvent)
         {
             Status = PaymentStatus.Cancelled;
+            OrderId = aggregateEvent.OrderId;
+        }
+
+        public void Apply(PaymentProcessCompleted aggregateEvent)
+        {
+            Status = PaymentStatus.Completed;
+            OrderId = aggregateEvent.OrderId;
         }
 
         public void Apply(PaymentProcessPinged aggregateEvent)

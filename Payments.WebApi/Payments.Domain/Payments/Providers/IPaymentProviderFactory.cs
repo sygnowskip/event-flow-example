@@ -7,7 +7,7 @@ namespace Payments.Domain.Payments.Providers
 {
     public interface IPaymentProviderFactory
     {
-        IPaymentProvider GetPaymentProvider(string country, string system, string currency);
+        IPaymentProvider GetPaymentProvider();
     }
 
     public class PaymentProviderFactory : IPaymentProviderFactory
@@ -21,9 +21,9 @@ namespace Payments.Domain.Payments.Providers
             _serviceProvider = serviceProvider;
         }
 
-        public IPaymentProvider GetPaymentProvider(string country, string system, string currency)
+        public IPaymentProvider GetPaymentProvider()
         {
-            var paymentProviderType = _configurationProvider.GetPaymentProviderType(country, system, currency);
+            var paymentProviderType = _configurationProvider.GetPaymentProviderType();
             var paymentProvider = _serviceProvider.GetServices<IPaymentProvider>().SingleOrDefault(p => p.Type == paymentProviderType);
 
             if (paymentProvider == null)

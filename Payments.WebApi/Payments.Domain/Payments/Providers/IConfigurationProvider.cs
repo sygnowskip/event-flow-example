@@ -2,15 +2,15 @@
 {
     public interface IConfigurationProvider
     {
-        PaymentProviderType GetPaymentProviderType(string country, string system, string currency);
+        PaymentProviderType GetPaymentProviderType();
     }
 
     public class ConfigurationProvider : IConfigurationProvider
     {
-        public PaymentProviderType GetPaymentProviderType(string country, string system, string currency)
+        public PaymentProviderType GetPaymentProviderType()
         {
             //TODO: Read it from read models
-            return country.Length % 2 == 0 ? PaymentProviderType.TestProvider1 : PaymentProviderType.TestProvider2;
+            return PaymentProviderType.TestProvider1;
         }
     }
 }
