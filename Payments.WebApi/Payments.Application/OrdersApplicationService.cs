@@ -2,10 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using EventFlow;
-using EventFlow.Aggregates;
 using Payments.Domain.Orders.Commands;
 using Payments.Domain.Orders;
-using Payments.Domain.Payments.Events;
 
 namespace Payments.Application
 {

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using EventFlow.Aggregates;
 using EventFlow.Snapshots;
 using EventFlow.Snapshots.Strategies;
 using Payments.Domain.Payments.Events;
