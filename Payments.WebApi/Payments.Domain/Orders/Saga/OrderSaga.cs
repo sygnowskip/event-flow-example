@@ -10,29 +10,15 @@ using Payments.Domain.Orders.Events;
 using Payments.Domain.Orders.Saga.Events;
 using Payments.Domain.Payments;
 using Payments.Domain.Payments.Events;
+using Payments.Domain.Common.Saga;
 
 namespace Payments.Domain.Orders
 {
-    public class OrderSagaLocator : ISagaLocator
+    public class OrderSagaLocator : BaseIdSagaLocator
     {
-        public Task<ISagaId> LocateSagaAsync(IDomainEvent domainEvent, CancellationToken cancellationToken)
+        
+        public OrderSagaLocator() : base(nameof(OrderId), id => new OrderSagaId($"ordersaga-{id}"))
         {
-            var orderId = Guid.Empty;
-            var aggregateEvent = domainEvent.GetAggregateEvent();
-            if (aggregateEvent is PaymentProcessCompleted paymentProcessCompleted)
-            {
-                orderId = paymentProcessCompleted.OrderId;
-            }
-            else if (aggregateEvent is PaymentProcessCancelled paymentProcessCancelled)
-            {
-                orderId = paymentProcessCancelled.OrderId;
-            }
-            else if (domainEvent is IDomainEvent<OrderAggregate, OrderId, OrderPaymentStarted> orderPaymentStarted)
-            {
-                orderId = orderPaymentStarted.AggregateIdentity.GetGuid();
-            }
-
-            return Task.FromResult<ISagaId>(new OrderSagaId($"ordersaga-{orderId}"));
         }
     }
 

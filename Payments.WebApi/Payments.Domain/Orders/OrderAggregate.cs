@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EventFlow;
 using EventFlow.Aggregates;
+using Payments.Domain.Common.Aggregate;
 using Payments.Domain.Orders.Events;
 using Payments.Domain.Payments;
 using Payments.Domain.Payments.Commands;
@@ -46,7 +48,7 @@ namespace Payments.Domain.Orders
             var totalPrice = OrderState.Products.Sum(p => p.Count * p.Price);
             await _commandBus.PublishAsync(new BeginPaymentProcessCommand(PaymentId.New, Id.GetGuid(),
                 OrderState.Username, totalPrice), CancellationToken.None);
-            Emit(new OrderPaymentStarted());
+            Emit(new OrderPaymentStarted(), this.MetadataFor(new { OrderId = Id.GetGuid() }));
         }
 
         public void MarkPaymentProcessAsFailed()

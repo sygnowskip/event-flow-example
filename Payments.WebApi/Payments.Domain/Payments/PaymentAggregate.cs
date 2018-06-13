@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using EventFlow.Aggregates;
 using EventFlow.Snapshots;
 using EventFlow.Snapshots.Strategies;
 using Payments.Domain.Payments.Events;
 using Payments.Domain.Payments.Providers;
 using Payments.Domain.Payments.Snapshots;
+using Payments.Domain.Common.Aggregate;
 
 namespace Payments.Domain.Payments
 {
@@ -41,18 +44,18 @@ namespace Payments.Domain.Payments
 
         public void CancelPaymentProcess()
         {
-            Emit(new PaymentProcessCancelled(PaymentState.OrderId));
+            Emit(new PaymentProcessCancelled(PaymentState.OrderId), this.MetadataFor(new { PaymentState.OrderId }));
         }
         public void CompletePaymentProcess()
         {
-            Emit(new PaymentProcessCompleted(PaymentState.OrderId));
+            Emit(new PaymentProcessCompleted(PaymentState.OrderId), this.MetadataFor(new { PaymentState.OrderId }));
         }
 
         public void Ping()
         {
             Emit(new PaymentProcessPinged());
         }
-        
+
         protected override Task<PaymentAggregateSnapshot> CreateSnapshotAsync(CancellationToken cancellationToken)
         {
             return Task.FromResult(
