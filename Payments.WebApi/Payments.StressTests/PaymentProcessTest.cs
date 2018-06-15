@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -19,23 +18,23 @@ namespace Payments.StressTests
         public IList<long> ResponseTimes { get; }= new List<long>();
         private bool Verbose { get; }
 
-        public PaymentProcessTest(string apiBaseUrl, bool verbose)
+        public PaymentProcessTest(string apiBaseUrl, bool verbose, string externalId)
         {
             Verbose = verbose;
             PingCounts = new Random(DateTime.Now.Millisecond).Next(10, 50);
-            ExternalId = Path.GetRandomFileName().Replace(".", "");
+            ExternalId = externalId;
             ApiBaseUrl = new Uri(apiBaseUrl);
         }
 
         public async Task Start()
         {
-            await BeginProcess();
+            //await BeginProcess();
             for (var i = 0; i < PingCounts; i++)
             {
                 await Ping();
             }
 
-            await Cancel();
+            //await Cancel();
             PrintSummary();
         }
 
@@ -46,7 +45,7 @@ namespace Payments.StressTests
             Console.WriteLine("--------------------------------");
         }
 
-        private async Task BeginProcess()
+        public async Task BeginProcess()
         {
             var beginUrl = new Uri(ApiBaseUrl, "/api/payment/begin");
             var request = new
@@ -71,7 +70,7 @@ namespace Payments.StressTests
                 await HttpClient.GetAsync(pingUrl));
         }
 
-        private async Task Cancel()
+        public async Task Cancel()
         {
             var cancelUrl = new Uri(ApiBaseUrl, $"/api/testprovider1/cancel?externalId={ExternalId}");
             await Execute("Cancel", async () =>
@@ -85,7 +84,7 @@ namespace Payments.StressTests
             timer.Stop();
             if (Verbose)
             {
-                Console.WriteLine($"{httpCallName} for {ExternalId} in {timer.ElapsedMilliseconds} miliseconds");
+                Console.WriteLine($"{httpCallName} for {ExternalId} in {timer.ElapsedMilliseconds} miliseconds ({ApiBaseUrl.AbsoluteUri})");
             }
             ResponseTimes.Add(timer.ElapsedMilliseconds);
         }
