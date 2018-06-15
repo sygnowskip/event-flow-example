@@ -4,18 +4,19 @@ using EventFlow.Aggregates;
 using EventFlow.Sagas;
 using EventFlow.Sagas.AggregateSagas;
 using EventFlow.ValueObjects;
+using Payments.Domain.Common.Saga;
 using Payments.Domain.Orders.Commands;
 using Payments.Domain.Orders.Events;
 using Payments.Domain.Orders.Saga.Events;
 using Payments.Domain.Payments;
+using Payments.Domain.Payments.Commands;
 using Payments.Domain.Payments.Events;
-using Payments.Domain.Common.Saga;
 
-namespace Payments.Domain.Orders
+namespace Payments.Domain.Orders.Saga
 {
     public class OrderSagaLocator : BaseIdSagaLocator
     {
-        
+
         public OrderSagaLocator() : base(nameof(OrderId), id => new OrderSagaId($"ordersaga-{id}"))
         {
         }
@@ -29,12 +30,14 @@ namespace Payments.Domain.Orders
     }
 
     public class OrderSaga : AggregateSaga<OrderSaga, OrderSagaId, OrderSagaLocator>,
-        ISagaIsStartedBy<OrderAggregate, OrderId, OrderPaymentStarted>,
+        ISagaIsStartedBy<OrderAggregate, OrderId, OrderPaymentRequested>,
         ISagaHandles<PaymentAggregate, PaymentId, PaymentProcessCompleted>,
         ISagaHandles<PaymentAggregate, PaymentId, PaymentProcessCancelled>,
-        IEmit<OrderSagaStarted>
+        IEmit<OrderPaymentRequestCompleted>
     {
         private OrderId OrderId { get; set; }
+        private PaymentId PaymentId { get; set; }
+        private decimal TotalAmount { get; set; }
         public OrderSaga(OrderSagaId id) : base(id)
         {
         }
@@ -51,15 +54,24 @@ namespace Payments.Domain.Orders
             return Task.CompletedTask;
         }
 
-        public Task HandleAsync(IDomainEvent<OrderAggregate, OrderId, OrderPaymentStarted> domainEvent, ISagaContext sagaContext, CancellationToken cancellationToken)
+        public Task HandleAsync(IDomainEvent<OrderAggregate, OrderId, OrderPaymentRequested> domainEvent, ISagaContext sagaContext, CancellationToken cancellationToken)
         {
-            Emit(new OrderSagaStarted(domainEvent.AggregateIdentity));
+            var paymentId = PaymentId.New;
+            Publish(new BeginPaymentProcessCommand(paymentId, domainEvent.AggregateIdentity.GetGuid(),
+                 domainEvent.AggregateEvent.Username, domainEvent.AggregateEvent.Amount));
+            
+            Emit(new OrderPaymentRequestCompleted(domainEvent.AggregateIdentity, paymentId, domainEvent.AggregateEvent.Amount));
+
+            Publish(new MarkPaymentProcessAsStartedCommand(domainEvent.AggregateIdentity, paymentId.GetGuid()));
+
             return Task.CompletedTask;
         }
 
-        public void Apply(OrderSagaStarted aggregateEvent)
+        public void Apply(OrderPaymentRequestCompleted aggregateEvent)
         {
             OrderId = aggregateEvent.OrderId;
+            PaymentId = aggregateEvent.PaymentId;
+            TotalAmount = aggregateEvent.Amount;
         }
     }
 }

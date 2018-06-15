@@ -1,18 +1,14 @@
-﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
 using EventFlow;
 using EventFlow.Aggregates;
 using Payments.Domain.Common.Aggregate;
 using Payments.Domain.Orders.Events;
-using Payments.Domain.Payments;
-using Payments.Domain.Payments.Commands;
 
 namespace Payments.Domain.Orders
 {
     public class OrderAggregate : AggregateRoot<OrderAggregate, OrderId>
     {
-        private readonly ICommandBus _commandBus;
         public OrderState OrderState { get; } = new OrderState();
 
         public int StateMachineState
@@ -23,7 +19,6 @@ namespace Payments.Domain.Orders
 
         public OrderAggregate(OrderId id, ICommandBus commandBus) : base(id)
         {
-            _commandBus = commandBus;
             Register(OrderState);
         }
 
@@ -42,17 +37,20 @@ namespace Payments.Domain.Orders
             Emit(new ProductToOrderAdded(name, count, price));
         }
 
-        public async Task BeginPaymentProcess()
+        public void BeginPaymentProcess()
         {
             var totalPrice = OrderState.Products.Sum(p => p.Count * p.Price);
-            await _commandBus.PublishAsync(new BeginPaymentProcessCommand(PaymentId.New, Id.GetGuid(),
-                OrderState.Username, totalPrice), CancellationToken.None);
-            Emit(new OrderPaymentStarted(), this.MetadataFor(new { OrderId = Id.GetGuid() }));
+            Emit(new OrderPaymentRequested(totalPrice, OrderState.Username), this.MetadataFor(new { OrderId = Id.GetGuid() }));
         }
 
         public void MarkPaymentProcessAsFailed()
         {
             Emit(new OrderPaymentFailed());
+        }
+
+        public void MarkPaymentProcessAsStarted(Guid paymentId)
+        {
+            Emit(new OrderPaymentStarted(paymentId));
         }
     }
 }

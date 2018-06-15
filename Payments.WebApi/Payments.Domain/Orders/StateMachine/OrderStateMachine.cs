@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Automatonymous;
 using Payments.Domain.Orders.StateMachine.Models;
 
@@ -20,6 +21,11 @@ namespace Payments.Domain.Orders.StateMachine
                     .ThenAsync(AddProductToOrder),
                 When(InitPaymentProcessRequested)
                     .ThenAsync(InitPaymentProcess)
+                    .TransitionTo(PaymentProcessRequested));
+
+            During(PaymentProcessRequested,
+                When(PaymentProcessSuccessfullyRequested)
+                    .ThenAsync(MarkPaymentProcessAsStarted)
                     .TransitionTo(PaymentProcessStarted));
 
             During(PaymentProcessStarted,
@@ -29,6 +35,12 @@ namespace Payments.Domain.Orders.StateMachine
                 When(PaymentProcessSuccessfullyFinished)
                     .ThenAsync(CompletePaymentProcess)
                     .TransitionTo(Completed));
+        }
+
+        private Task MarkPaymentProcessAsStarted(BehaviorContext<OrderAggregate, Guid> context)
+        {
+            context.Instance.MarkPaymentProcessAsStarted(context.Data);
+            return Task.CompletedTask;
         }
 
         private Task MarkPaymentProcessAsFailed(BehaviorContext<OrderAggregate> context)
@@ -43,9 +55,10 @@ namespace Payments.Domain.Orders.StateMachine
             return Task.CompletedTask;
         }
 
-        private async Task InitPaymentProcess(BehaviorContext<OrderAggregate> context)
+        private Task InitPaymentProcess(BehaviorContext<OrderAggregate> context)
         {
-            await context.Instance.BeginPaymentProcess();
+            context.Instance.BeginPaymentProcess();
+            return Task.CompletedTask;
         }
 
         private Task AddProductToOrder(BehaviorContext<OrderAggregate, AddProductToOrderData> context)
@@ -65,11 +78,13 @@ namespace Payments.Domain.Orders.StateMachine
         public Event<string> OrderCreationRequested { get; private set; }
         public Event<AddProductToOrderData> AddProductToOrderRequested { get; private set; }
         public Event InitPaymentProcessRequested { get; private set; }
+        public Event<Guid> PaymentProcessSuccessfullyRequested { get; private set; }
         public Event PaymentProcessSuccessfullyFinished { get; private set; }
         public Event PaymentProcessCanceled { get; private set; }
 
 
         public State Created { get; private set; }
+        public State PaymentProcessRequested { get; private set; }
         public State PaymentProcessStarted { get; private set; }
         public State Completed { get; private set; }
     }

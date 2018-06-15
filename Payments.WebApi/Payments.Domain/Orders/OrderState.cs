@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using EventFlow.Aggregates;
 using Payments.Domain.Orders.Events;
 
@@ -8,7 +9,8 @@ namespace Payments.Domain.Orders
     {
         New = 3,
         PaymentInProgress,
-        Completed
+        Completed,
+        RequestingForPayment
     }
 
     public class OrderProduct
@@ -30,7 +32,8 @@ namespace Payments.Domain.Orders
         IApply<ProductToOrderAdded>,
         IApply<OrderPaymentStarted>,
         IApply<OrderPaymentCompleted>,
-        IApply<OrderPaymentFailed>
+        IApply<OrderPaymentFailed>,
+        IApply<OrderPaymentRequested>
     {
         public OrderState()
         {
@@ -40,6 +43,7 @@ namespace Payments.Domain.Orders
         public OrderStatus Status { get; set; }
         public string Username { get; set; }
         public IList<OrderProduct> Products { get; set; }
+        public Guid PaymentId { get; set; }
 
         public void Load(OrderState orderState)
         {
@@ -70,7 +74,13 @@ namespace Payments.Domain.Orders
 
         public void Apply(OrderPaymentStarted aggregateEvent)
         {
+            PaymentId = aggregateEvent.PaymentId;
             Status = OrderStatus.PaymentInProgress;
+        }
+
+        public void Apply(OrderPaymentRequested aggregateEvent)
+        {
+            Status = OrderStatus.RequestingForPayment;
         }
     }
 }
