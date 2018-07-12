@@ -1,10 +1,11 @@
 ﻿using System;
+using EventFlow.AspNetCore.Extensions;
+using EventFlow.DependencyInjection.Extensions;
 using EventFlow.Extensions;
 using EventFlow.MsSql;
 using EventFlow.MsSql.EventStores;
 using EventFlow.MsSql.Extensions;
 using EventFlow.MsSql.SnapshotStores;
-using EventFlow.ServiceProvider.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -36,6 +37,7 @@ namespace Payments.WebApi
             services.AddTransient<IPaymentsApplicationService, PaymentsApplicationService>();
             services.AddTransient<IOrdersApplicationService, OrdersApplicationService>();
             services.AddEventFlow(options => options
+                .AddAspNetCoreMetadataProviders()
                 .ConfigureMsSql(MsSqlConfiguration.New
                     .SetConnectionString(Configuration.GetConnectionString("EventFlowDb")))
                 .UseMssqlEventStore()

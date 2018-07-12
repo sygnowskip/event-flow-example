@@ -7,6 +7,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EventFlow" Version="0.62.3569" />
+    <PackageReference Include="EventFlow.AspNetCore" Version="0.62.3569" />
+    <PackageReference Include="EventFlow.DependencyInjection" Version="0.62.3569" />
     <PackageReference Include="EventFlow.MsSql" Version="0.62.3569" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
@@ -15,7 +17,6 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EventFlow.ServiceProvider\EventFlow.ServiceProvider.csproj" />
     <ProjectReference Include="..\Payments.Application\Payments.Application.csproj" />
   </ItemGroup>
 </Project>
