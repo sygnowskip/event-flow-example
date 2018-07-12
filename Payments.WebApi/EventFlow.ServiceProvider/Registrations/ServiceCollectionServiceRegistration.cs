@@ -37,7 +37,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace EventFlow.ServiceProvider.Registrations
 {
-    public class ServiceCollectionServiceRegistration : ServiceRegistration, IServiceRegistration
+    public class ServiceCollectionServiceRegistration : IServiceRegistration
     {
         private readonly IServiceCollection _collection;
         private readonly DecoratorService _decoratorService = new DecoratorService();
