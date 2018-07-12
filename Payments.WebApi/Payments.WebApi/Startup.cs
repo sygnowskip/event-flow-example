@@ -1,10 +1,10 @@
 ﻿using System;
+using EventFlow.DependencyInjection.Extensions;
 using EventFlow.Extensions;
 using EventFlow.MsSql;
 using EventFlow.MsSql.EventStores;
 using EventFlow.MsSql.Extensions;
 using EventFlow.MsSql.SnapshotStores;
-using EventFlow.ServiceProvider.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
